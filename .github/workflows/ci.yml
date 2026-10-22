@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-          
+
       - name: Instalar dependencias
         run: |
           python -m pip install --upgrade pip
@@ -31,3 +31,10 @@ jobs:
 
       - name: Rodar Testes
         run: python -m pytest -v
+
+      - name: Subir a API e testar requisicao (Integracao)
+        run: |
+          fastapi run main.py --port 8000 &
+          sleep 3
+          curl -f http://localhost:8000/
+          curl -f http://localhost:8000/somar/10/20
